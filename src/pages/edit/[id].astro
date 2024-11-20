@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { app } from "../../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+
+interface Recipe {
+  id: string;
+  name: string;
+  game: string;
+  description: string;
+  ingredients: string;
+  steps: string
+  imageURL: string;
+}
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/404");
+}
+
+const db = getFirestore(app);
+const recipesRef = db.collection("recipes");
+const recipeSnapshot = await recipesRef.doc(id).get();
+
+if (!recipeSnapshot.exists) {
+  return Astro.redirect("/404");
+}
+
+const recipe = recipeSnapshot.data() as Recipe;
+---
+
+<Layout title="Edit {recipe.name}">
+  <h1>Edit {recipe.name}</h1>
+  <p>Here you can edit or delete your recipe.</p>
+  <form method="post" action={`/api/recipes/${id}`}>
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" value={recipe.name} />
+    <label for="game">Game</label>
+    <input type="text" id="game" name="game" value={recipe.game} />
+    <label for="game">Description</label>
+    <input type="text" id="description" name="description" value={recipe.description} />
+    <label for="ingredients">Ingredients</label>
+    <input type="text" id="ingredients" name="ingredients" value={recipe.ingredients} />
+    <label for="steps">Steps</label>
+    <input type="text" id="steps" name="steps" value={recipe.steps} />
+    <label for="imageURL">Image URL</label>
+    <input type="text" id="imageURL" name="imageURL" value={recipe.imageURL} />
+    <button type="submit">Edit recipe</button>
+  </form>
+  <button type="button" id="delete-document">Delete</button>
+</Layout>
+<script>
+  const deleteButton = document.getElementById(
+    "delete-document"
+  ) as HTMLButtonElement;
+  const url = document.querySelector("form")?.getAttribute("action") as string;
+  deleteButton.addEventListener("click", async () => {
+    const response = await fetch(url, {
+      method: "DELETE",
+    });
+    if (response.redirected) {
+      window.location.assign(response.url);
+    }
+  });
+</script>
