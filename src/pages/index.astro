@@ -1,8 +1,28 @@
 ---
+import { getAuth } from 'firebase-admin/auth'
+import { app } from '../firebase/server'
 
+const auth = getAuth(app)
+// Get session cookie
+const sessionCookie = Astro.cookies.get('session')?.value
+
+if (sessionCookie) {
+    try {
+        // Verify session cookie
+        const decodedCookie = await auth.verifySessionCookie(sessionCookie)
+        // If valid, redirect to dashboard
+        if (decodedCookie) return Astro.redirect('/dashboard')
+    } catch (error) {
+        console.log('Session verification failed:', error)
+        // If verification fails, clear the invalid cookie
+        Astro.cookies.delete('session', { path: '/' })
+    }
+} else {
+    return Astro.redirect('/signin')
+}
 ---
 
-<html lang="en">
+<!-- <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -13,4 +33,4 @@
 	<body>
 		<h1>Astro</h1>
 	</body>
-</html>
+</html> -->

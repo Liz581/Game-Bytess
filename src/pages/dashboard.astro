@@ -26,26 +26,25 @@ const recipes = recipesSnapshot.docs.map((doc) => ({
   ...doc.data(),
 })) as Recipe[];
 
-const sessionCookie = Astro.cookies.get('session')?.value
-let user
+// const sessionCookie = Astro.cookies.get('session')?.value
+// const sessionCookie = Astro.cookies.get('session')?.value
+// let user
+// // TODO Retrieve the session cookie and verify it
+// // Use Firebase verifySessionCookie method to verify the session cookie
 
-// Retrieve the session cookie and verify it
-// Use Firebase verifySessionCookie method to verify the session cookie
-if (sessionCookie) {
-    const decodedCookie = await auth.verifySessionCookie(sessionCookie)
+// if (sessionCookie) {
+//     const decodedCookie = await auth.verifySessionCookie(sessionCookie)
 
-    // Get the user details from the decoded cookie
-    user = await auth.getUser(decodedCookie.uid)
+//     // Get the user details from the decoded cookie
+//     user = await auth.getUser(decodedCookie.uid)
 
-    // If the user is not found, redirect the user to the signin page
-    if (!user) return Astro.redirect('/signin')
-} else {
-    return Astro.redirect('/signin')
-}
+//     // TODO If the user is not found, redirect the user to the signin page
+//     if (!user) return Astro.redirect('/signin')
+// }
 ---
 
 <Layout title="dashboard">
-  <h1>Welcome {user.displayName}</h1>
+  <!-- <h1>Welcome {user.displayName}</h1> -->
   <p>We are happy to see you here</p>
 
   <ul>
