@@ -31,6 +31,7 @@ const recipe = recipeSnapshot.data() as Recipe;
 ---
 
 <Layout title={recipe.name}>
+  <a href={`/dashboard`}>Back to Dashboard</a>
 <img src={recipe.imageURL}alt={recipe.name}/>
   <h1>{recipe.name}</h1>
   <h4>Game</h4>
