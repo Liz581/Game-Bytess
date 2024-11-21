@@ -1,11 +1,5 @@
 import { config } from 'dotenv'
 import fs from 'fs/promises'
-import {
-    collection,
-    doc,
-    getDocs,
-    deleteDoc,
-} from 'firebase/firestore'
 // import { app } from './src/firebase/server.ts'
 import { getFirestore } from "firebase-admin/firestore";
 import type { ServiceAccount } from "firebase-admin";
