@@ -10,6 +10,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const name = formData.get("name")?.toString();
+  console.log("here");
 
   if (!email || !password || !name) {
     return new Response(
@@ -17,6 +18,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       { status: 400 }
     );
   }
+  console.log("here2");
 
   /* Create user */
   try {
@@ -31,5 +33,6 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       { status: 400 }
     );
   }
+  console.log("here3");
   return redirect("/signin");
 };
