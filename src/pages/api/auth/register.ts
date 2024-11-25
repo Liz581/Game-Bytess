@@ -32,6 +32,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       displayName: name,
     });
   } catch (error: any) {
+    console.log(error)
     return new Response(
       "Something went wrong",
       { status: 400 }
