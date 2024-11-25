@@ -23,6 +23,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   /* Create user */
   try {
+    console.log(email)
+    console.log(password)
+    console.log(name)
     await auth.createUser({
       email,
       password,
