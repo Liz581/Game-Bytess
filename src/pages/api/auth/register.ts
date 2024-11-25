@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
-// import { getAuth } from "firebase-admin/auth";
-// import { app } from "../../../firebase/server";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase-admin/auth";
+import { app } from "../../../firebase/server";
+// import {  createUserWithEmailAndPassword } from "firebase/auth";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
-  const auth = getAuth();
+  const auth = getAuth(app);
 
   /* Get form data */
   const formData = await request.formData();
@@ -23,26 +23,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   /* Create user */
   try {
-    // await auth.createUser({
-    //   email,
-    //   password,
-    //   displayName: name,
-    // });
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        console.log(user)
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode)
-        console.log(errorMessage)
-        // ..
-      });
+    await auth.createUser({
+      email,
+      password,
+      displayName: name,
+    });
   } catch (error: any) {
     return new Response(
       "Something went wrong",
