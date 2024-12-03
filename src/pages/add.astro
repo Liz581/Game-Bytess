@@ -2,21 +2,94 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Add a new recipe">
-  <h1>Add a new friend</h1>
-  <form method="post" action="/api/recipes">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" />
-    <label for="game">Game</label>
-    <input type="text" id="game" name="game" />
-    <label for="description">Description</label>
-    <input type="text" id="description" name="description" />
-    <label for="ingredients">Ingredients</label>
-    <input type="text" id="ingredients" name="ingredients" />
-    <label for="steps">Steps</label>
-    <input type="text" id="steps" name="steps" />
-    <label for="imageURL">Image URL</label>
-    <input type="text" id="imageURL" name="imageURL" />
-    <button type="submit">Add recipe</button>
-  </form>
+<Layout title="Add a New Recipe">
+  <h1>Add a New Recipe</h1>
+  <a href="/dashboard" class="go-back-button">back</a>
+  <div class="add-form">
+    <form method="post" action="/api/recipes">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Delicious Cake" required/>
+      <label for="game">Game</label>
+      <input type="text" id="game" name="game" placeholder="Super Game" required/>
+      <label for="description">Description</label>
+      <input type="text" id="description" name="description" placeholder="This is a cake from the Super Game" required/>
+      <label for="ingredients">Ingredients</label>
+      <input type="text" id="ingredients" name="ingredients" placeholder="1 Cake" required/>
+      <label for="steps">Steps</label>
+      <input type="text" id="steps" name="steps" placeholder="Buy a cake." required/>
+      <label for="imageURL">Image URL</label>
+      <input type="text" id="imageURL" name="imageURL" placeholder="https://cake_picture.png" required/>
+      <button type="submit">Add recipe</button>
+    </form>
+  </div>
 </Layout>
+<style>
+  .add-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      background-color: #ffffff;
+  }
+
+  .add-form input {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    /* Style the submit button */
+  .add-form button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #0f0f0f;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .add-form button:disabled {
+        background-color: #ffffff;
+    }
+
+    .add-form button:hover:not(:disabled) {
+        background-color: rgb(36, 90, 238);
+        transition: background-color 0.3s ease;
+    }
+
+    .add-form header {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .add-form label {
+      font-family: 'Nunito';
+        font-size: 25px;
+        margin-bottom: 0rem;
+    }
+  .go-back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .go-back-button:hover {
+    background-color: #0056b3;
+  }
+</style>

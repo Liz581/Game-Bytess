@@ -2,9 +2,10 @@
 import { app } from "../firebase/server";
 import Layout from "../layouts/Layout.astro";
 import { getFirestore } from "firebase-admin/firestore";
-// import { getAuth } from "firebase-admin/auth";
+import RecipeCard from '../components/RecipeCard.jsx';
+import { getAuth } from "firebase-admin/auth";
 
-// const auth = getAuth(app);
+const auth = getAuth(app);
 
 interface Recipe {
   id: string;
@@ -26,9 +27,20 @@ const recipes = recipesSnapshot.docs.map((doc) => ({
   ...doc.data(),
 })) as Recipe[];
 
-// const sessionCookie = Astro.cookies.get('session')?.value
-// const sessionCookie = Astro.cookies.get('session')?.value
-// let user
+let user = null;
+
+const sessionCookie = Astro.cookies.get('session')?.value;
+console.log('Session Cookie:', sessionCookie); // Log the cookie to check its value
+
+if (sessionCookie) {
+  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+  console.log('Decoded Cookie:', decodedCookie); // Log the decoded cookie to ensure it's valid
+
+  user = await auth.getUser(decodedCookie.uid);
+  console.log('User:', user); // Log the user object to verify it has the displayName
+  console.log('hello')
+}
+
 // // TODO Retrieve the session cookie and verify it
 // // Use Firebase verifySessionCookie method to verify the session cookie
 
@@ -44,23 +56,93 @@ const recipes = recipesSnapshot.docs.map((doc) => ({
 ---
 
 <Layout title="dashboard">
-  <!-- <h1>Welcome {user.displayName}</h1> -->
-  <h3>We are happy to see you here</h3>
-  <a href={`/add`}>Add New Recipe</a>
-  <h4>Recipes</h4>
-  <ul>
-    {
-      recipes.map((recipe) => (
-        <li>
-          <a href={`/recipe/${recipe.id}`}>{recipe.name}</a>
-          <span>({recipe.game})</span>
-          <a href={`/edit/${recipe.id}`}>Edit</a>
-        </li>
-      ))
-    }
-  </ul>
-
-  <form action="/api/auth/signout">
-    <button type="submit">Sign out</button>
-  </form>
+  <div class="container">
+    <nav class="sidebar">
+      <h1>Game Bytes</h1>
+      <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/page1">Page 1</a></li>
+        <li><a href="/page2">Page 2</a></li>
+      </ul>
+      <form action="/api/auth/signout">
+        <button type="submit">Sign out</button>
+      </form>
+    </nav>
+    <div class="content">
+      <div class="top-bar">
+        <h2>Brrr, it's chilly these days. Right, {user?.displayName || "Chef"} ?? </h2>
+        <a href={`/add`}>Add New Recipe</a>
+      </div>
+      <h4>Recipes</h4>
+        {recipes.map((recipe) => (
+            // <li>
+            //   <a href={`/recipe/${recipe.id}`}>{recipe.name}</a>
+            //   <span>({recipe.game})</span>
+            //   <a href={`/edit/${recipe.id}`}>Edit</a>
+            // </li>
+            <div class="product-grid">
+              <RecipeCard title={recipe.name} game={recipe.game} image={recipe.imageURL} />
+            </div>
+          ))
+        }
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .container {
+    display: flex;
+  }
+  .top-bar {
+    display: flex;              /* Use flexbox for the layout */
+    justify-content: space-between; /* Space out the items */
+    align-items: center;        /* Vertically align the items in the center */
+    padding: 10px;              /* Add some padding for spacing */
+  }
+  .content {
+    padding: 10px;
+    margin-left: 20px;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 800;
+  }
+
+  body {
+      font-family: 'Nunito';
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(45deg, #ffbcff, #fffeb1);
+  }
+
+  .sidebar {
+  width: 200px;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.sidebar ul li a:hover {
+  color: #007bff;
+}
+</style>
