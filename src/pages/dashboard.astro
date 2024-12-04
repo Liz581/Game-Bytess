@@ -73,48 +73,81 @@ if (sessionCookie) {
         <h2>Brrr, it's chilly these days. Right, {user?.displayName || "Chef"} ?? </h2>
         <a href={`/add`}>Add New Recipe</a>
       </div>
-      <h4>Recipes</h4>
+      <!-- commented out as a reccomendation from chatgpt, tackles issue where cards upload in column format -->
+      <!-- <h4>Recipes</h4>
+      <div class="product-grid"></div>
         {recipes.map((recipe) => (
             // <li>
             //   <a href={`/recipe/${recipe.id}`}>{recipe.name}</a>
             //   <span>({recipe.game})</span>
             //   <a href={`/edit/${recipe.id}`}>Edit</a>
             // </li>
-            <div class="product-grid">
+            <div>
               <RecipeCard title={recipe.name} game={recipe.game} image={recipe.imageURL} />
             </div>
           ))
         }
+      </div> -->
+      <h4>Recipes</h4>
+      <div class="product-grid">
+      {recipes.map((recipe) => (
+        <div>
+          <RecipeCard 
+            title={recipe.name} 
+            game={recipe.game} 
+            image={recipe.imageURL} 
+          />
+        </div>
+        ))}
+      </div>
+
     </div>
   </div>
 </Layout>
 
 <style>
+  /* entire page container */
   .container {
     display: flex;
   }
+
+  /* container for grid items, header, top-bar */
+  .content {
+    padding: 10px;
+    margin-left: 20px;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .grid-container {
+    display: block;
+    width:100%;
+  }
+
+  .product-grid {
+    display: grid; /* Enables grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+    gap: 16px; /* Spacing between items */
+    padding: 16px; /* Padding around the grid */
+    width: 100%; /* Full width */
+  }
+
   .top-bar {
     display: flex;              /* Use flexbox for the layout */
     justify-content: space-between; /* Space out the items */
     align-items: center;        /* Vertically align the items in the center */
     padding: 10px;              /* Add some padding for spacing */
   }
-  .content {
-    padding: 10px;
-    margin-left: 20px;
-  }
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
 
+
+  /* header format */
   h1 {
     font-size: 30px;
     font-style: italic;
     font-weight: 800;
   }
 
+  /*background color & format */
   body {
       font-family: 'Nunito';
       margin: 0;
@@ -122,27 +155,28 @@ if (sessionCookie) {
       background: linear-gradient(45deg, #ffbcff, #fffeb1);
   }
 
+  /* sidebar components */
   .sidebar {
   width: 200px;
   background-color: #f4f4f4;
   padding: 20px;
-}
+  }
 
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
-.sidebar ul li {
-  margin: 15px 0;
-}
+  .sidebar ul li {
+    margin: 15px 0;
+  }
 
-.sidebar ul li a {
-  text-decoration: none;
-  color: #333;
-}
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+  }
 
-.sidebar ul li a:hover {
-  color: #007bff;
-}
+  .sidebar ul li a:hover {
+    color: #007bff;
+  }
 </style>
