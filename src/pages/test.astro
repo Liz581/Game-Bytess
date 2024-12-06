@@ -1,0 +1,23 @@
+---
+// src/pages/index.astro
+import { getGames} from './api/igdb/games';
+import type { Game } from './api/igdb/igdb';
+
+const games: Game[] = await getGames();
+---
+<html>
+  <body>
+    <h1>Game List</h1>
+    <ul>
+      {games.map(game => (
+        <Fragment key={game.id}>
+          <li>
+            <h2>{game.name}</h2>
+            {game.cover && <img src={game.cover.url} alt={game.name} />}
+            {game.genres && <p>Genres: {game.genres.map(g => g.name).join(', ')}</p>}
+          </li>
+        </Fragment>
+      ))}
+    </ul>
+  </body>
+</html>

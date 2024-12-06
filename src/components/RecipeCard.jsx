@@ -1,6 +1,11 @@
 import React from "react";
 import styles from "./RecipeCard.module.css";
 
+// interface prop here for recipes
+// pull in recipe object and then you can use the recipe object to
+//  populate the recipe card w/ title, game, image, description
+// future addition: coverart for game
+
 function RecipeCard({ title, game, image }) {
   return (
     <div className={styles["recipe-card"]}>
