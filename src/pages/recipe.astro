@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import RecipeDetail from "../components/recipedetail";
+import { app } from "../firebase/server";
+import { getFirestore } from "firebase-admin/firestore";
+
+interface Recipe {
+  id: string;
+  name: string;
+  game: string;
+  description: string;
+  ingredients: string;
+  steps: string;
+  imageURL: string;
+}
+
+// Fetch the recipe data
+const db = getFirestore(app);
+const recipesRef = db.collection("recipes");
+
+
+const recipeSnapshot = await recipesRef.limit(1).get();
+const recipeData = recipeSnapshot.docs[0]?.data() as Recipe;    // get recipe from recipe card that was clicked!!! modify this
+
+
+if (!recipeData) {
+  return Astro.redirect("/404");
+}
+---
+
+<Layout title={recipeData.name}>
+  <RecipeDetail recipe={recipeData} />
+  <a href={`/dashboard`}>Back to Dashboard</a>
+
+</Layout>

@@ -98,13 +98,15 @@ if (sessionCookie) {
       <div class="product-grid">
       {recipes.map((recipe) => (
         <div>
-          <RecipeCard 
-            title={recipe.name} 
-            game={recipe.game} 
-            image={recipe.imageURL} 
-          />
+          <a href={`/recipe/${recipe.id}`}>
+        <RecipeCard 
+          title={recipe.name} 
+          game={recipe.game} 
+          image={recipe.imageURL} 
+        />
+          </a>
         </div>
-        ))}
+      ))}
       </div>
 
     </div>
