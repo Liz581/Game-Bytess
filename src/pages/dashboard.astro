@@ -3,19 +3,11 @@ import { app } from "../firebase/server";
 import Layout from "../layouts/Layout.astro";
 import { getFirestore } from "firebase-admin/firestore";
 import RecipeCard from '../components/RecipeCard.jsx';
+import RecipeBox from '../components/RecipeBox.tsx'
 import { getAuth } from "firebase-admin/auth";
+import type { Recipe, remixRecipe } from "../recipes_schema"
 
 const auth = getAuth(app);
-
-interface Recipe {
-  id: string;
-  name: string;
-  game: string;
-  description: string;
-  ingredients: string;
-  steps: string
-  imageURL: string;
-}
 
 /* Check current session + display recipes */
 
@@ -95,18 +87,19 @@ if (sessionCookie) {
         <button class="category" type="submit">Most Liked Recipes</button>
       </div>
       <h3>Recipe Inspiration</h3>
-      <div class="product-grid">
-      {recipes.map((recipe) => (
-        <div>
-          <RecipeCard 
-            title={recipe.name} 
-            game={recipe.game} 
-            image={recipe.imageURL} 
-          />
-        </div>
-        ))}
-      </div>
+      <div>
+        <!-- {recipes.map((recipe) => (
+          <div>
+            <RecipeCard 
+              title={recipe.name} 
+              game={recipe.game} 
+              image={recipe.imageURL} 
+            />
+          </div>
+          ))} -->
 
+        <RecipeBox recipes={recipes}/>
+      </div>
     </div>
   </div>
 </Layout>

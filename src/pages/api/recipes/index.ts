@@ -14,6 +14,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const ingredients = formData.get("ingredients")?.toString();
   const steps = formData.get("steps")?.toString();
   const imageURL = formData.get("imageURL")?.toString();
+  const likes = 0;
 
   if (!name || !game || !description || !ingredients || !steps || !imageURL) {
     return new Response("Missing required fields", {
@@ -30,6 +31,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       ingredients,
       steps,
       imageURL,
+      likes
     });
   } catch (error) {
     return new Response("Something went wrong", {

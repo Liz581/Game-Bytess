@@ -19,3 +19,9 @@ export interface remixRecipe {
     imageURL: string;
     likes: number;
 }
+
+export interface Users {
+    uid: string;
+    username: string;
+    email: string;
+}
