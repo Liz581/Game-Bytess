@@ -67,9 +67,9 @@ if (sessionCookie) {
       <h1>Game Bytes</h1>
       <ul>
         <li><a href={`/dashboard`}>Dashboard</a></li>
-        <li><a href={`/create`}>Create a Recipe</a></li>
-        <li><a href={`/add-recipe`}>Add a Recipe</a></li>
-        <li><a href={`/add-remix`}>Add a Remixed Recipe</a></li>
+        <li><a href={`/create`}>Create a Recipe (AI)</a></li>
+        <li><a href={`/add-recipe`}>Add Your Recipe</a></li>
+        <!-- <li><a href={`/add-remix`}>Add a Remixed Recipe</a></li> -->
       </ul>
       <form action="/api/auth/signout">
         <button class="sign-out" type="submit">Sign out</button>
@@ -92,7 +92,7 @@ if (sessionCookie) {
         <button class="category" type="submit">All Recipes</button>
         <button class="category" type="submit">Remixed Recipes</button>
         <button class="category" type="submit">Not Remixed Recipes</button>
-        <button class="category" type="submit">Liked Recipes</button>
+        <button class="category" type="submit">Most Liked Recipes</button>
       </div>
       <h3>Recipe Inspiration</h3>
       <div class="product-grid">
@@ -122,7 +122,6 @@ if (sessionCookie) {
     padding: 10px;
     margin-left: 20px;
     width: 100%;
-    height: 100vh;
   }
 
   .grid-container {

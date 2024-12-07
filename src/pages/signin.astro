@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 
 /* Check if the user is authenticated */
 const auth = getAuth(app)
-const sessionCookie = Astro.cookies.get('session')?.value
+const sessionCookie = Astro.cookies.get('__session')?.value
 // validate with firebase auth, how to verify cookie
 if (sessionCookie) {
     try {
@@ -16,7 +16,7 @@ if (sessionCookie) {
     } catch (error) {
         console.log('Session verification failed:', error)
         // If verification fails, clear the invalid cookie
-        Astro.cookies.delete('session', { path: '/' })
+        Astro.cookies.delete('__session', { path: '/' })
     }
 }
 ---
