@@ -1,5 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+
 ---
 
 <!-- Update this to fit with the recipes that people can make their own and post it, we can stick with url but if they don't have a url then we need to find a way to upload images -->
@@ -9,17 +12,26 @@ import Layout from "../layouts/Layout.astro";
   <a href="/dashboard" class="go-back-button">back</a>
   <div class="add-form">
     <form method="post" action="/api/recipes">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" placeholder="Delicious Cake" required/>
-      <label for="game">Game</label>
-      <input type="text" id="game" name="game" placeholder="Super Game" required/>
+      <label for="recipe">Recipe</label>
+      <input type="text" id="recipe" name="recipe" placeholder="Write the Correct Recipe"/>
+      <label for="user">User</label>
+      <input type="text" id="user" name="user" placeholder="Type your Username" required/>
       <label for="comment">What Did You Change?</label>
-      <input type="text" id="comment" name="comment" placeholder="This is a cake from the Super Game" required/>
+      <input type="text" id="comment" name="comment" placeholder="Used cream cheese instead of frosting." required/>
       <label for="imageURL">Image URL</label>
       <input type="text" id="imageURL" name="imageURL" placeholder="https://cake_picture.png" required/>
       <button type="submit">Add Recipe Remix</button>
     </form>
   </div>
+  <script>
+    const recipe = new URLSearchParams(window.location.search).get('recipe');
+    console.log(recipe); // Use this value if needed or pre-fill form fields
+
+    const recipeInput = document.getElementById('recipe');
+    // if (recipeInput && recipe) {
+    //   recipeInput.value = recipe;
+    // }
+  </script>
 </Layout>
 <style>
   .add-form {

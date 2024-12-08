@@ -2,16 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import { app } from "../../firebase/server";
 import { getFirestore } from "firebase-admin/firestore";
-
-interface Recipe {
-  id: string;
-  name: string;
-  game: string;
-  description: string;
-  ingredients: string;
-  steps: string
-  imageURL: string;
-}
+import RemixBox from '../../components/RemixBox.tsx'
+import type { Recipe, remixRecipe } from "../../recipes_schema"
 
 const { id } = Astro.params;
 
@@ -22,6 +14,12 @@ if (!id) {
 const db = getFirestore(app);
 const recipesRef = db.collection("recipes");
 const recipeSnapshot = await recipesRef.doc(id).get();
+const remixesRef = db.collection("remixes");
+const remixSnapshot = await remixesRef.where("recipe_id", "==", id).get();
+const remixes = remixSnapshot.docs.map((doc) => ({
+  id: doc.id,
+  ...doc.data(),
+})) as remixRecipe[];
 
 if (!recipeSnapshot.exists) {
   return Astro.redirect("/404");
@@ -32,7 +30,7 @@ const recipe = recipeSnapshot.data() as Recipe;
 
 <Layout title={recipe.name}>
   <a href={`/dashboard`}>Back to Dashboard</a>
-<img src={recipe.imageURL}alt={recipe.name}/>
+  <img src={recipe.imageURL}alt={recipe.name}/>
   <h1>{recipe.name}</h1>
   <h4>Game</h4>
   <p>{recipe.game}</p>
@@ -42,4 +40,14 @@ const recipe = recipeSnapshot.data() as Recipe;
   <p>{recipe.ingredients}</p>
   <h4>Steps</h4>
   <p>{recipe.steps}</p>
+
+  <h4>See What Others Did to Make It Their Own</h4>
+  {remixes.length === 0 ? (
+      <p>No remixes yet.</p>
+  ) : (
+    remixes.map((remix) => (
+      <RemixBox remix={remix}/>
+    ))
+  )}
+
 </Layout>

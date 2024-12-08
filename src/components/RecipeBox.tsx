@@ -20,24 +20,26 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({ recipes }) => {
             ) : (
                 recipes.map((recipe) => (
                     <div key={recipe.id} className={styles["recipe-card"]}>
-                        <img src={recipe.imageURL} 
-                            alt={recipe.name}
-                            onError={(e) => {
-                                const target = e.target as HTMLImageElement
-                                target.src = '/plateholder.png'
-                            }}
-                        />
-                        <h2>{recipe.name}</h2>
-                        <p>{recipe.game}</p>
+                        <a href={`/recipe/${recipe.id}`}>
+                            <img src={recipe.imageURL} 
+                                alt={recipe.name}
+                                onError={(e) => {
+                                    const target = e.target as HTMLImageElement
+                                    target.src = '/plateholder.png'
+                                }}
+                            />
+                            <h2>{recipe.name}</h2>
+                            <p>{recipe.game}</p>
 
-                        <a href="/add-remix">
+                            <a href={`/add-remix?recipe=${recipe.name}`}>
+                                <button className={styles["button"]} type="submit">
+                                    I remixed this!
+                                </button>
+                            </a>
                             <button className={styles["button"]} type="submit">
-                                I remixed this!
+                                {liked ? 'Liked!' : 'Like'}
                             </button>
                         </a>
-                        <button className={styles["button"]} type="submit">
-                            {liked ? 'Liked!' : 'Like'}
-                        </button>
                     </div>
                 ))
             )}

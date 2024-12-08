@@ -1,0 +1,35 @@
+.remix-card {
+    display: flex;
+    align-items: center; /* Vertically center the items */
+    justify-content: space-between; /* Space out the children to fit the 3-column layout */
+    gap: 16px; /* Optional: Adds space between columns */
+    padding: 16px; /* Optional: Adds padding around the card */
+    border: 1px solid #ccc; /* Optional: Adds a border to the card */
+    border-radius: 8px; /* Optional: Rounds the corners */
+}
+
+.remix-image {
+    width: 100px; /* Set the image width (adjust as needed) */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.remix-info {
+    flex: 1; /* This will make the middle section (the div with the comment) take up remaining space */
+}
+
+.remix-link {
+    text-align: right; /* Align the link (button) to the right */
+}
+
+.button {
+    padding: 8px 16px; /* Style the button */
+    background-color: #007bff; /* Button color */
+    color: white; /* Button text color */
+    border: none; /* Remove button border */
+    border-radius: 4px; /* Optional: Add rounded corners to button */
+    cursor: pointer; /* Change cursor to pointer when hovering */
+}
+
+.button:hover {
+    background-color: #0056b3; /* Button hover color */
+}

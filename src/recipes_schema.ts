@@ -14,8 +14,8 @@ export interface Recipe {
 export interface remixRecipe {
     id: string;
     recipe_id: number;
-    user_uid: string;
-    changes: string;
+    user: string;
+    comment: string;
     imageURL: string;
     likes: number;
 }
