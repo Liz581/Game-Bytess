@@ -11,21 +11,24 @@ if (!id) {
   return Astro.redirect("/404");
 }
 
+const rec_id = parseInt(id, 10);
 const db = getFirestore(app);
 const recipesRef = db.collection("recipes");
-const recipeSnapshot = await recipesRef.doc(id).get();
+const recipeQuerySnapshot = await recipesRef.where("id", "==", rec_id).get();
+
+if (recipeQuerySnapshot.empty) {
+  return Astro.redirect("/404");
+}
+
+const recipe = recipeQuerySnapshot.docs[0].data() as Recipe;
+
 const remixesRef = db.collection("remixes");
-const remixSnapshot = await remixesRef.where("recipe_id", "==", id).get();
+const remixSnapshot = await remixesRef.where("recipe_id", "==", rec_id).get();
 const remixes = remixSnapshot.docs.map((doc) => ({
   id: doc.id,
   ...doc.data(),
 })) as remixRecipe[];
 
-if (!recipeSnapshot.exists) {
-  return Astro.redirect("/404");
-}
-
-const recipe = recipeSnapshot.data() as Recipe;
 ---
 
 <Layout title={recipe.name}>

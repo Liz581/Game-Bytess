@@ -3,6 +3,15 @@ import Layout from "../layouts/Layout.astro";
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 
+const auth = getAuth(app);
+let user = null;
+
+const sessionCookie = Astro.cookies.get('__session')?.value;
+
+if (sessionCookie) {
+  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+  user = await auth.getUser(decodedCookie.uid);
+}
 ---
 
 <!-- Update this to fit with the recipes that people can make their own and post it, we can stick with url but if they don't have a url then we need to find a way to upload images -->
@@ -11,11 +20,11 @@ import { getAuth } from "firebase-admin/auth";
   <h1>Add Your Remix Recipe</h1>
   <a href="/dashboard" class="go-back-button">back</a>
   <div class="add-form">
-    <form method="post" action="/api/recipes">
+    <form method="post" action="/api/remixes">
       <label for="recipe">Recipe</label>
-      <input type="text" id="recipe" name="recipe" placeholder="Write the Correct Recipe"/>
+      <input type="text" id="recipe" name="recipe" placeholder="Write the Correct Recipe" readonly/>
       <label for="user">User</label>
-      <input type="text" id="user" name="user" placeholder="Type your Username" required/>
+      <input type="text" id="user" name="user" value={user?.displayName} placeholder="Type your Username" readonly/>
       <label for="comment">What Did You Change?</label>
       <input type="text" id="comment" name="comment" placeholder="Used cream cheese instead of frosting." required/>
       <label for="imageURL">Image URL</label>
@@ -25,12 +34,11 @@ import { getAuth } from "firebase-admin/auth";
   </div>
   <script>
     const recipe = new URLSearchParams(window.location.search).get('recipe');
-    console.log(recipe); // Use this value if needed or pre-fill form fields
 
-    const recipeInput = document.getElementById('recipe');
-    // if (recipeInput && recipe) {
-    //   recipeInput.value = recipe;
-    // }
+    const recipeInput = document.getElementById('recipe') as HTMLInputElement;
+    if (recipeInput && recipe) {
+      recipeInput.value = recipe;
+    }
   </script>
 </Layout>
 <style>
@@ -101,5 +109,11 @@ import { getAuth } from "firebase-admin/auth";
 
   .go-back-button:hover {
     background-color: #0056b3;
+  }
+
+  input[readonly] {
+    background-color: #d4d4d4;  /* Darken the background */
+    border: 1px solid #333;  /* Optional: Dark border to make it stand out */
+    cursor: not-allowed;     /* Change cursor to indicate the field is readonly */
   }
 </style>

@@ -7,18 +7,14 @@ import { getAuth } from "firebase-admin/auth";
 import type { Recipe, remixRecipe } from "../recipes_schema"
 
 const auth = getAuth(app);
-
-/* Check current session + display recipes */
-
 const db = getFirestore(app);
+
 const recipesRef = db.collection("recipes");
 const recipesSnapshot = await recipesRef.get();
 const recipes = recipesSnapshot.docs.map((doc) => ({
   id: doc.id,
   ...doc.data(),
 })) as Recipe[];
-
-let user = null;
 
 // Default query
 let query = '';
@@ -38,16 +34,13 @@ if (query.length > 2) { // Make sure the query is at least 3 characters long
   searchRecipes = recipesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Recipe[];
 }
 
+let user = null;
 const sessionCookie = Astro.cookies.get('__session')?.value;
-console.log('Session Cookie:', sessionCookie); // Log the cookie to check its value
 
 if (sessionCookie) {
   const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-  console.log('Decoded Cookie:', decodedCookie); // Log the decoded cookie to ensure it's valid
-
   user = await auth.getUser(decodedCookie.uid);
   console.log('User:', user); // Log the user object to verify it has the displayName
-  console.log('hello')
 }
 
 ---

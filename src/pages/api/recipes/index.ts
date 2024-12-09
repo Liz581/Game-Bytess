@@ -23,8 +23,14 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   }
   try {
     const db = getFirestore(app);
+
+    let newID = 0
     const recipesRef = db.collection("recipes");
+    const recipeQuerySnapshot = await recipesRef.get();
+    newID = recipeQuerySnapshot.size + 1;
+
     await recipesRef.add({
+      id: newID,
       name,
       game,
       description,
